@@ -1,0 +1,189 @@
+### Input configuration
+#
+# Example configuration:
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Put your touchpad's ID to replace "Touchpad-ID" (keep the quotation marks)
+
+# Key to do all the things (Mod1=Alt, Mod4=Super/Windows)
+set $mod Mod4
+
+# Default Terminal
+set $term alacritty
+
+# Program Launcher
+set $menu rofi -no-config -no-lazy-grab -show drun -modi drun -theme ~/.config/wofi/launcher.rasi
+bindsym $mod+d exec $menu
+
+# Power menu
+bindsym $mod+P exec $HOME/.config/wofi/wofi-power.sh
+
+# Autofocus on hover, also when switching workspaces
+focus_follows_mouse always
+
+### KEYBINDINGS ###
+# Start a terminal
+bindsym $mod+Return exec $term
+
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+
+#
+# Volume
+#
+bindsym --locked XF86AudioRaiseVolume exec pamixer -ui 2
+bindsym --locked XF86AudioLowerVolume exec pamixer -ud 2
+bindsym --locked XF86AudioMute exec pamixer -t
+
+# Player
+#
+bindsym XF86AudioPlay exec playerctl play
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+#
+# Backlight
+#
+bindsym XF86MonBrightnessUp exec brightnessctl -c backlight set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl -c backlight set 5%-
+#
+# Record (Screenshots/Record videos)
+#
+bindsym print exec /usr/share/sway/scripts/grimshot --notify save output
+bindsym $mod+Print exec /usr/share/sway/scripts/grimshot --notify save area
+#-o eDP-1
+bindsym $mod+Shift+Print exec "wf-recorder --audio=alsa_output.pci-0000_00_1b.0.analog-stereo -f $HOME/Vídeos/Gravação-$(date -Iseconds | cut -d'+' -f1).mp4"  
+
+# Switch workspace to another monitor
+bindsym $mod+Shift+h move workspace to output left
+bindsym $mod+Shift+Tab move workspace to output left
+bindsym $mod+Shift+j move workspace to output down
+bindsym $mod+Shift+k move workspace to output up
+bindsym $mod+Shift+l move workspace to output right
+
+# Kill focused window
+bindsym $mod+Shift+q kill
+
+# Resize/move (floating and tiled) windows with mouse
+# inverse: $mod+left click = resize    $mod + right click = move window
+floating_modifier $mod inverse
+
+# reload sway
+bindsym $mod+Shift+c reload
+
+# Exit sway 
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+
+#prev/next workspace. bind it to your mouse if you have a sticky keyboard
+bindsym $mod+Shift+o workspace prev_on_output
+bindsym $mod+Shift+p workspace next_on_output
+
+# Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# move between recent workspaces
+bindsym $mod+Tab workspace back_and_forth
+
+# Split direction
+# NOTE: we are using autotiling based on window dimensions
+# See https://github.com/nwg-piotr/autotiling
+bindsym $mod+b splith
+bindsym $mod+v splitv
+
+# switch layouts
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+# fullscreen
+bindsym $mod+f fullscreen global
+
+# toggle floating mode
+bindsym $mod+Shift+space floating toggle
+
+# swap focus between the tiling & floating area
+bindsym $mod+space focus mode_toggle
+
+# move focus to the parent container
+bindsym $mod+a focus parent
+
+# Media keys
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+#########  Resizing Containers #########
+### $mod+mouseClick works better tho ###
+
+mode "resize" {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+
+# same bindings, but for the arrow keys
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+
+# easier than quitting vim
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+
+# Notification thing
+exec mako 
+
+# Applets
+exec nm-applet --indicator 
+exec blueman-applet 
+
+# Arch update notifications
+exec kalu 
+
+# Clipboard manager
+exec wl-paste -t text --watch clipman store
+
+# fingerprint reader
+exec lxsession
+
+# Auto set monitor properties
+exec_always pkill kanshi; exec kanshi
+
+# Autotiling based on window dimensions
+exec autotiling &
+
+# Finally start waybar
+exec_always $HOME/.config/waybar/launch.sh &

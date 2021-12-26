@@ -1,0 +1,18 @@
+input "type:touchpad" {
+	drag enabled
+	tap enabled
+	natural_scroll disabled
+	middle_emulation enabled
+}
+input "type:keyboard" {
+    xkb_layout br(abnt2),us,jp(kana)
+    xkb_options grp:win_space_toggle,c/aps:shift,compose:menu-altgr
+}
+input "type:touch" {
+	map_to_output eDP-1
+}
+
+exec_always {
+   'swaymsg input type:keyboard xkb_layout "$(localectl status | grep "X11 Layout" | sed -e "s/^.*X11 Layout://")"'
+   'swaymsg input type:keyboard xkb_variant "$(localectl status | grep "X11 Variant" | sed -e "s/^.*X11 Variant://")"'
+}

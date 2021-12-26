@@ -1,0 +1,6 @@
+#########     Configuration    #########
+###           Load configs in the directory
+
+# Include scripts or configs
+include $HOME/.config/sway/config.d/*
+#xwayland disable

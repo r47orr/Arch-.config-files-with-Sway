@@ -1,0 +1,65 @@
+# General interface font:
+font pango: Quicksand 13
+
+# Import GTK settings
+exec_always {
+	gsettings set org.gnome.desktop.interface icon-theme 'dracula'
+}
+
+exec_always {
+    ~/bin/import-gsettings \
+    gtk-theme:dracula\
+    icon-theme:dracula\
+    cursor-theme:WinSur-white-cursors\
+    font-name:Quicksand
+} 
+
+# Hide borders at the edge of the screen
+hide_edge_borders smart
+
+# Gaps
+# gaps inner|outer|horizontal|vertical|top|right|bottom|left <amount>
+# Sets default amount pixels of inner or outer gap
+# the inner affects spacing around each view
+# the outer affects the spacing around each workspace
+# To reduce or remove outer gaps, outer gaps can be set to a negative value.
+gaps inner 5
+gaps outer 1
+gaps top 1
+gaps bottom 1
+
+# Hide gaps when there is only 1 window
+smart_gaps on
+
+# Hide titlebar on windows: 
+default_border pixel 2
+
+# Default Font
+font pango:Quicksand 10
+
+# cursor
+seat seat0 xcursor_theme WinSur-white-cursors 20
+
+# Thin borders:
+smart_borders on
+
+# Set wallpaper:
+exec $HOME/.config/sway/scripts/background.sh
+
+# Title format for windows
+for_window [shell="xdg_shell"] title_format "%title (%app_id)"
+for_window [shell="x_wayland"] title_format "%class - %title"
+
+# Only edit this part; these are the colour presets for the windows.
+set $bg #E85F58
+set $bod_f #7A0000
+set $bod_u #969696
+set $text #d2d2d2
+
+# class                 border  bground text    indicator child_border
+client.focused   $bod_f $bg $text $bod_f $bod_f
+client.unfocused $bod_u $bg $text $bod_u $bod_u
+client.focused_inactive $bod_u $bg $text $bod_u $bod_u
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+client.background       #F8F8F2
